@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Enemy_Mushroom : Enemy
 {
