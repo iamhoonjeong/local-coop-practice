@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -68,5 +69,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         GameObject newObject = Instantiate(prefab, newPosition, Quaternion.identity);
+    }
+
+    private void LoadTheEndScene() => SceneManager.LoadScene("TheEnd");
+
+    public void LevelFinished()
+    {
+        UI_InGame.instance.fadeEffect.ScreenFade(1, 1.5f, LoadTheEndScene);
     }
 }
