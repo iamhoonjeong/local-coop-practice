@@ -50,8 +50,10 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
     private int facingDir = 1;
 
-    [Header("VFX")]
+    [Header("Player Visuals")]
     [SerializeField] private GameObject deathVfx;
+    [SerializeField] private AnimatorOverrideController[] animators;
+    [SerializeField] private int skinId;
 
     private void Awake()
     {
@@ -64,6 +66,7 @@ public class Player : MonoBehaviour
     {
         defaultGravityScale = rb.gravityScale;
         RespawnFinished(false);
+        UpdateSkin();
     }
 
     private void Update()
@@ -87,6 +90,16 @@ public class Player : MonoBehaviour
         HandleFlip();
         HandleCollision();
         HandleAnimations();
+    }
+
+    public void UpdateSkin()
+    {
+        SkinManager skinManager = SkinManager.instance;
+
+        if (skinManager == null)
+            return;
+
+        anim.runtimeAnimatorController = animators[skinManager.choosenSkinId];
     }
 
     private void HandleEnemyDetection()
