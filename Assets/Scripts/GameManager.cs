@@ -149,7 +149,11 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt($"Level{nextLevelIndex}Unlocked", 1);
 
         if (NoMoveLevels() == false)
+        {
             PlayerPrefs.SetInt("ContinueLevelNumber", nextLevelIndex);
+            PlayerPrefs.SetInt("LastUsedSkin", SkinManager.instance.GetSkinId());
+        }
+
     }
 
     public void RestartLevel()
