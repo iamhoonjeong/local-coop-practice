@@ -260,6 +260,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   deathVfx: {fileID: 6338960588763479786, guid: 38150d81a41d3402096e4deb2991b7d6, type: 3}
+  animators:
+  - {fileID: 22100000, guid: 356c2c49c106945bd976cf918b28a131, type: 2}
+  - {fileID: 22100000, guid: a747febb647ab4b3281b1382e3d0ed9f, type: 2}
+  - {fileID: 22100000, guid: b1307857ede91487fa9564ebde977043, type: 2}
+  - {fileID: 22100000, guid: b15601685a72340a396d02863a2bce46, type: 2}
+  skinId: 0
 --- !u!1 &2789904368173564738
 GameObject:
   m_ObjectHideFlags: 0
