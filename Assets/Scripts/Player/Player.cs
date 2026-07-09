@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private DifficultyType gameDifficulty;
+    private GameManager gameManager;
+
     private Rigidbody2D rb;
     private Animator anim;
     private CapsuleCollider2D cd;
@@ -65,6 +68,9 @@ public class Player : MonoBehaviour
     private void Start()
     {
         defaultGravityScale = rb.gravityScale;
+        gameManager = GameManager.instance;
+
+        UndateGameDifficulty();
         RespawnFinished(false);
         UpdateSkin();
     }
@@ -90,6 +96,38 @@ public class Player : MonoBehaviour
         HandleFlip();
         HandleCollision();
         HandleAnimations();
+    }
+
+    public void Damage()
+    {
+        if (gameDifficulty == DifficultyType.Normal)
+        {
+            if (gameManager.FruitsCollected() <= 0)
+            {
+                Die();
+                gameManager.RestartLevel();
+            }
+            else
+            {
+                gameManager.RemoveFruit();
+            }
+
+            return;
+        }
+
+        if (gameDifficulty == DifficultyType.Hard)
+        {
+            Die();
+            gameManager.RestartLevel();
+        }
+    }
+
+    private void UndateGameDifficulty()
+    {
+        DifficultyManager difficultyManager = DifficultyManager.instance;
+
+        if (difficultyManager != null)
+            gameDifficulty = difficultyManager.difficulty;
     }
 
     public void UpdateSkin()

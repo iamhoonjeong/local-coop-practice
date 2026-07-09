@@ -7,12 +7,15 @@ public class SkinManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
     public void SetSkinId(int id) => choosenSkinId = id;
