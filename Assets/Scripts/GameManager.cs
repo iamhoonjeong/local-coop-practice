@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        levelTimer = Time.deltaTime;
+        levelTimer += Time.deltaTime;
 
         inGameUI.UpdateTimerUI(levelTimer);
     }
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
         totalFruits = allFruits.Length;
 
         inGameUI.UdpateFruitUI(fruitsCollected, totalFruits);
+
+        PlayerPrefs.SetInt($"Level{currentLevelIndex}TotalFruits", totalFruits);
     }
 
     public void UpdateRespawnPosition(Transform newRespawnPoint) => respawnPoint = newRespawnPoint;
@@ -101,7 +103,29 @@ public class GameManager : MonoBehaviour
     public void LevelFinished()
     {
         SaveLevelProgression();
+        SaveBestTime();
+        SaveFruitsInfo();
+
         LoadNextScene();
+    }
+
+    private void SaveFruitsInfo()
+    {
+        int fruitsCollectedBefore = PlayerPrefs.GetInt($"Level{currentLevelIndex}FruitsCollected");
+
+        if (fruitsCollectedBefore < fruitsCollected)
+            PlayerPrefs.SetInt($"Level{currentLevelIndex}FruitsCollected", fruitsCollected);
+
+        int totalFruitsInBank = PlayerPrefs.GetInt("TotalFruitsAmount");
+        PlayerPrefs.SetInt("TotalFruitsAmount", totalFruitsInBank + fruitsCollected);
+    }
+
+    private void SaveBestTime()
+    {
+        float lastTime = PlayerPrefs.GetFloat($"Level{currentLevelIndex}BestTime", 99);
+
+        if (levelTimer < lastTime)
+            PlayerPrefs.SetFloat($"Level{currentLevelIndex}BestTime", levelTimer);
     }
 
     private void SaveLevelProgression()
