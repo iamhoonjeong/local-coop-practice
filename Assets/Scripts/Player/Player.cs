@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private DifficultyType gameDifficulty;
+    [SerializeField] private GameObject fruitDrop;
+    [SerializeField] private DifficultyType gameDifficulty;
     private GameManager gameManager;
 
     private Rigidbody2D rb;
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     [Header("Player Visuals")]
     [SerializeField] private GameObject deathVfx;
     [SerializeField] private AnimatorOverrideController[] animators;
+    [SerializeField] private ParticleSystem dustFx;
     [SerializeField] private int skinId;
 
     private void Awake()
@@ -109,6 +111,7 @@ public class Player : MonoBehaviour
             }
             else
             {
+                ObjectCreator.instance.CreateObject(fruitDrop, transform, true);
                 gameManager.RemoveFruit();
             }
 
@@ -251,6 +254,8 @@ public class Player : MonoBehaviour
 
     private void HandleLanding()
     {
+        dustFx.Play();
+
         isAirborne = false;
         canDoubleJump = true;
 
@@ -312,13 +317,17 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        dustFx.Play();
         AudioManager.instance.PlaySFX(3);
+
         rb.linearVelocityY = jumpForce;
     }
 
     private void DoubleJump()
     {
+        dustFx.Play();
         AudioManager.instance.PlaySFX(3);
+
         StopCoroutine(WallJumpRoutine());
         isWallJumping = false;
         canDoubleJump = false;
@@ -327,6 +336,7 @@ public class Player : MonoBehaviour
 
     private void WallJump()
     {
+        dustFx.Play();
         AudioManager.instance.PlaySFX(12);
 
         canDoubleJump = true;
