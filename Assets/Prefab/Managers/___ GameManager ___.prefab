@@ -46,13 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   levelTimer: 0
   currentLevelIndex: 0
-  playerPrefab: {fileID: 1856444695699938564, guid: 0d14b4bb229df4fd7be154a2fa3006bc, type: 3}
-  respawnPoint: {fileID: 0}
-  respawnDelay: 1.5
-  player: {fileID: 0}
   fruitsAreRandom: 0
   fruitsCollected: 0
   totalFruits: 0
   canReactivate: 0
-  arrowPrefab: {fileID: 678225036741555363, guid: 4e656422c4c4440a99d1e73157e50df5, type: 3}
   audioManager: {fileID: 5155637573010035111, guid: 751ccf901ef014cda8af41bc0047c9b8, type: 3}
+  playerManager: {fileID: 2283301953750057775, guid: b29af3c3dec9c4d75a4a06fd92ba2e9d, type: 3}
+  skinManager: {fileID: 1613159036219153574, guid: 12e8e784e16404d77a9ebfa5988ebc00, type: 3}
+  difficultyManager: {fileID: 1488215575927555057, guid: ffd65fc3d947748c9a39d7b5bc782b83, type: 3}
+  objectCreator: {fileID: 7950515231400557282, guid: e673400c797b84d7f8aa9a939e8cfbae, type: 3}
