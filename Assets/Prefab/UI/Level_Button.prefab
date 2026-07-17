@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 5578122941079294621}
   - component: {fileID: 2189593518370946734}
   - component: {fileID: 4529129851799189286}
+  - component: {fileID: 46397134577958908}
   m_Layer: 5
   m_Name: Level_Button
   m_TagString: Untagged
@@ -501,6 +502,18 @@ MonoBehaviour:
   levelNumberText: {fileID: 760465515528921735}
   bestTimeText: {fileID: 2427365996284651749}
   fruitsText: {fileID: 5498992189871520531}
+--- !u!114 &46397134577958908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814708659277602300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63445054a85444a899335686d66c43df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_UpdateLastSelected
 --- !u!1 &8089529487706662571
 GameObject:
   m_ObjectHideFlags: 0
