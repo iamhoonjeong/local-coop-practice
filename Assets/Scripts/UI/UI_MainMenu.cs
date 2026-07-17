@@ -1,9 +1,13 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
+    [SerializeField] private GameObject lastSelected;
+    private DefaultInputActions defaultInput;
     private UI_FadeEffect fadeEffect;
     public string FirstLevelName;
 
@@ -21,6 +25,20 @@ public class UI_MainMenu : MonoBehaviour
     private void Awake()
     {
         fadeEffect = GetComponentInChildren<UI_FadeEffect>();
+
+        defaultInput = new DefaultInputActions();
+    }
+
+    private void OnEnable()
+    {
+        defaultInput.Enable();
+        defaultInput.UI.Navigate.performed += ctx => UpdateSelected();
+    }
+
+    private void OnDisable()
+    {
+        defaultInput.Disable();
+        defaultInput.UI.Navigate.performed -= ctx => UpdateSelected();
     }
 
     private void Start()
@@ -29,6 +47,17 @@ public class UI_MainMenu : MonoBehaviour
             continueButton.SetActive(true);
 
         fadeEffect.ScreenFade(0, 1.5f);
+    }
+
+    public void UpdateLastSelected(GameObject newLastSelected)
+    {
+        lastSelected = newLastSelected;
+    }
+
+    private void UpdateSelected()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+            EventSystem.current.SetSelectedGameObject(lastSelected);
     }
 
     public void SwitchUI(GameObject uiToEnable)
