@@ -11,6 +11,8 @@ public class PlayerManager : MonoBehaviour
     public PlayerInputManager playerInputManager { get; private set; }
     public static PlayerManager instance;
 
+    public List<GameObject> objectsToDisable;
+
     public int lifePoints;
     public int maxPlayerCount = 1;
     public int playerCountWinCondition;
@@ -31,7 +33,6 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
 
         playerInputManager = GetComponent<PlayerInputManager>();
-        playerInputManager.SetMaximumPlayerCount(maxPlayerCount);
     }
 
     private void OnEnable()
@@ -44,6 +45,12 @@ public class PlayerManager : MonoBehaviour
     {
         playerInputManager.onPlayerJoined -= AddPlayer;
         playerInputManager.onPlayerLeft -= RemovePlayer;
+    }
+
+    public void SetupMaxPlayerCount(int newPlayerCount)
+    {
+        maxPlayerCount = newPlayerCount;
+        playerInputManager.SetMaximumPlayerCount(maxPlayerCount);
     }
 
     public void EnableJoinAndUpdateLifePoints()
@@ -67,6 +74,11 @@ public class PlayerManager : MonoBehaviour
         int newPlayerSkinId = SkinManager.instance.GetSkinId(newPlayerNumber);
 
         playerScript.UpdateSkin(newPlayerSkinId);
+
+        foreach (GameObject gameObject in objectsToDisable)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void RemovePlayer(PlayerInput player)

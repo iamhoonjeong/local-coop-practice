@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -30,6 +31,7 @@ public class UI_InGame : MonoBehaviour
         playerInput = new PlayerInputSet();
     }
 
+
     private void OnEnable()
     {
         playerInput.Enable();
@@ -46,6 +48,8 @@ public class UI_InGame : MonoBehaviour
     private void Start()
     {
         fadeEffect.ScreenFade(0, 1);
+        GameObject pressJoinText = FindAnyObjectByType<UI_TextBlinkEffect>().gameObject;
+        PlayerManager.instance.objectsToDisable.Add(pressJoinText);
     }
 
     private void Update()
