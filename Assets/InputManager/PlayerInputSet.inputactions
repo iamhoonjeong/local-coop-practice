@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "PlayerInput",
+    "name": "PlayerInputSet",
     "maps": [
         {
             "name": "Player",
@@ -19,6 +19,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "68ec9259-f8df-4e48-835e-d84e4a16a1aa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "JoinGame",
+                    "type": "Button",
+                    "id": "88754505-e16f-4cd7-b167-7e4ae67b085f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -157,6 +166,28 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76bd5f91-fb03-48f2-8a04-9da1aa58d9e8",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "JoinGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c7a5a3c-0b83-4bc0-b505-bcbbdfa59856",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "JoinGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -198,7 +229,7 @@
                 {
                     "name": "",
                     "id": "8db791c4-e24a-4e85-87ac-e0891dde551e",
-                    "path": "<Gamepad>/start",
+                    "path": "<Gamepad>/select",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",

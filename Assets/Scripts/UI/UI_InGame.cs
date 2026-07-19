@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -7,14 +9,15 @@ public class UI_InGame : MonoBehaviour
 {
     [SerializeField] private GameObject firstSelected;
 
-    private PlayerInput playerInput;
-    private Player player;
+    private PlayerInputSet playerInput;
+    private List<Player> playerList;
     public static UI_InGame instance;
 
     public UI_FadeEffect fadeEffect { get; private set; }
 
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI fruitText;
+    [SerializeField] private TextMeshProUGUI lifePointsText;
 
     [SerializeField] private GameObject pauseUI;
 
@@ -25,8 +28,9 @@ public class UI_InGame : MonoBehaviour
         instance = this;
 
         fadeEffect = GetComponentInChildren<UI_FadeEffect>();
-        playerInput = new PlayerInput();
+        playerInput = new PlayerInputSet();
     }
+
 
     private void OnEnable()
     {
@@ -44,6 +48,8 @@ public class UI_InGame : MonoBehaviour
     private void Start()
     {
         fadeEffect.ScreenFade(0, 1);
+        GameObject pressJoinText = FindAnyObjectByType<UI_TextBlinkEffect>().gameObject;
+        PlayerManager.instance.objectsToDisable.Add(pressJoinText);
     }
 
     private void Update()
@@ -60,7 +66,7 @@ public class UI_InGame : MonoBehaviour
 
     public void PauseButton()
     {
-        player = PlayerManager.instance.player;
+        playerList = PlayerManager.instance.GetPlayerList();
 
         if (isPaused)
             UnpauseTheGame();
@@ -70,8 +76,12 @@ public class UI_InGame : MonoBehaviour
 
     private void PauseTheGame()
     {
+        foreach (var player in playerList)
+        {
+            player.playerInput.Disable();
+        }
+
         EventSystem.current.SetSelectedGameObject(firstSelected);
-        player.playerInput.Disable();
         isPaused = true;
         Time.timeScale = 0;
         pauseUI.SetActive(true);
@@ -79,7 +89,11 @@ public class UI_InGame : MonoBehaviour
 
     private void UnpauseTheGame()
     {
-        player.playerInput.Enable();
+        foreach (var player in playerList)
+        {
+            player.playerInput.Enable();
+        }
+
         isPaused = false;
         Time.timeScale = 1;
         pauseUI.SetActive(false);
@@ -98,5 +112,16 @@ public class UI_InGame : MonoBehaviour
     public void UpdateTimerUI(float timer)
     {
         timerText.text = $"{timer.ToString("00")}s";
+    }
+
+    public void UpdateLifePointsUI(int lifePoints, int maxLifePoints)
+    {
+        if (DifficultyManager.instance.difficulty == DifficultyType.Easy)
+        {
+            lifePointsText.transform.parent.gameObject.SetActive(false);
+            return;
+        }
+
+        lifePointsText.text = $"{lifePoints}/{maxLifePoints}";
     }
 }

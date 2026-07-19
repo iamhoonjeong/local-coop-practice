@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -11,7 +14,7 @@ public class Player : MonoBehaviour
     private Animator anim;
     private CapsuleCollider2D cd;
 
-    public PlayerInput playerInput { get; private set; }
+    public InputActionAsset playerInput { get; private set; }
     private Vector2 moveInput;
 
     private bool canBeControlled = false;
@@ -24,20 +27,21 @@ public class Player : MonoBehaviour
     private bool canDoubleJump;
 
     [Header("Buffer & Coyote jump")]
-    [SerializeField] private float bufferJumpWindow = 0.25f;
+    [SerializeField] private float bufferJumpWindow = .25f;
     private float bufferJumpActivated = -1;
-    [SerializeField] private float coyoteJumpWindow = 0.5f;
+    [SerializeField] private float coyoteJumpWindow = .5f;
     private float coyoteJumpActivated = -1;
 
     [Header("Wall interactions")]
-    [SerializeField] private float wallJumpDuration = 0.6f;
+    [SerializeField] private float wallJumpDuration = .6f;
     [SerializeField] private Vector2 wallJumpForce;
     private bool isWallJumping;
 
     [Header("Knockback")]
     [SerializeField] private float knockbackDuration = 1;
-    [SerializeField] private Vector2 KnockbackPower;
+    [SerializeField] private Vector2 knockbackPower;
     private bool isKnocked;
+
 
     [Header("Collision")]
     [SerializeField] private float groundCheckDistance;
@@ -51,39 +55,22 @@ public class Player : MonoBehaviour
     private bool isAirborne;
     private bool isWallDetected;
 
+
     private bool facingRight = true;
     private int facingDir = 1;
 
     [Header("Player Visuals")]
-    [SerializeField] private GameObject deathVfx;
     [SerializeField] private AnimatorOverrideController[] animators;
+    [SerializeField] private GameObject deathVfx;
     [SerializeField] private ParticleSystem dustFx;
     [SerializeField] private int skinId;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         cd = GetComponent<CapsuleCollider2D>();
         anim = GetComponentInChildren<Animator>();
-        playerInput = new PlayerInput();
-    }
 
-    private void OnEnable()
-    {
-        playerInput.Enable();
-
-        playerInput.Player.Jump.performed += ctx => JumpButton();
-        playerInput.Player.Movement.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        playerInput.Player.Movement.canceled += ctx => moveInput = Vector2.zero;
-    }
-
-    private void OnDisable()
-    {
-        playerInput.Disable();
-
-        playerInput.Player.Jump.performed -= ctx => JumpButton();
-        playerInput.Player.Movement.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        playerInput.Player.Movement.canceled -= ctx => moveInput = Vector2.zero;
+        playerInput = GetComponent<PlayerInput>().actions;
     }
 
     private void Start()
@@ -93,7 +80,6 @@ public class Player : MonoBehaviour
 
         UndateGameDifficulty();
         RespawnFinished(false);
-        UpdateSkin();
     }
 
     private void Update()
@@ -126,7 +112,7 @@ public class Player : MonoBehaviour
             if (gameManager.FruitsCollected() <= 0)
             {
                 Die();
-                gameManager.RestartLevel();
+                // gameManager.RestartLevel();
             }
             else
             {
@@ -140,7 +126,7 @@ public class Player : MonoBehaviour
         if (gameDifficulty == DifficultyType.Hard)
         {
             Die();
-            gameManager.RestartLevel();
+            // gameManager.RestartLevel();
         }
     }
 
@@ -152,14 +138,14 @@ public class Player : MonoBehaviour
             gameDifficulty = difficultyManager.difficulty;
     }
 
-    public void UpdateSkin()
+    public void UpdateSkin(int skinIndex)
     {
         SkinManager skinManager = SkinManager.instance;
 
         if (skinManager == null)
             return;
 
-        anim.runtimeAnimatorController = animators[skinManager.choosenSkinId];
+        GetComponentInChildren<Animator>().runtimeAnimatorController = animators[skinIndex];
     }
 
     private void HandleEnemyDetection()
@@ -214,7 +200,8 @@ public class Player : MonoBehaviour
         AudioManager.instance.PlaySFX(9);
         CameraManager.instance.ScreenShake(knockBackDir);
         StartCoroutine(KnockbackRoutine());
-        rb.linearVelocity = new Vector2(KnockbackPower.x * knockBackDir, KnockbackPower.y);
+
+        rb.linearVelocity = new Vector2(knockbackPower.x * knockBackDir, knockbackPower.y);
     }
 
     public void Die()
@@ -431,4 +418,40 @@ public class Player : MonoBehaviour
         Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y - groundCheckDistance));
         Gizmos.DrawLine(transform.position, new Vector2(transform.position.x + wallCheckDistance * facingDir, transform.position.y));
     }
+
+    private void OnEnable()
+    {
+        playerInput.Enable();
+
+        playerInput.FindAction("Jump").performed += OnJumpPerformed;
+        playerInput.FindAction("Movement").performed += OnMovementPerformed;
+        playerInput.FindAction("Movement").canceled += OnMovementCanceled;
+    }
+
+    private void OnDisable()
+    {
+        playerInput.Disable();
+
+        playerInput.FindAction("Jump").performed -= OnJumpPerformed;
+        playerInput.FindAction("Movement").performed -= OnMovementPerformed;
+        playerInput.FindAction("Movement").canceled -= OnMovementCanceled;
+    }
+
+    private void OnMovementCanceled(InputAction.CallbackContext context)
+    {
+        moveInput = Vector2.zero;
+
+    }
+
+    private void OnMovementPerformed(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    private void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        JumpButton();
+        AttemptBufferJump();
+    }
+
 }

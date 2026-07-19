@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f922058444c492d9d720dfb2f4e571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkinManager
-  choosenSkinId: 0
+  skinId: 03000000010000000000000000000000

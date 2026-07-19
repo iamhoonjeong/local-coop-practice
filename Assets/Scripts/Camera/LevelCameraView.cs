@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class LevelCameraTrigger : MonoBehaviour
+public class LevelCameraView : MonoBehaviour
 {
     private LevelCamera levelCamera;
-
-    private int playersInTrigger;
+    private int playersInView;
 
     private void Awake()
     {
@@ -17,13 +16,10 @@ public class LevelCameraTrigger : MonoBehaviour
 
         if (player != null)
         {
-            playersInTrigger++;
+            playersInView++;
 
-            if (playersInTrigger == levelCamera.playerList.Count)
-            {
-                levelCamera.EnableCamera(true);
-                levelCamera.EnableLimits(true);
-            }
+            if (playersInView >= levelCamera.playerList.Count)
+                levelCamera.ChangeCameraLensSize(levelCamera.minCameraSize);
         }
     }
 
@@ -33,13 +29,10 @@ public class LevelCameraTrigger : MonoBehaviour
 
         if (player != null)
         {
-            playersInTrigger--;
+            playersInView--;
 
-            if (playersInTrigger == 0)
-            {
-                levelCamera.EnableCamera(false);
-                levelCamera.EnableLimits(false);
-            }
+            if (playersInView < levelCamera.playerList.Count)
+                levelCamera.ChangeCameraLensSize(levelCamera.maxCameraSize);
         }
     }
 }

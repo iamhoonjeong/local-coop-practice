@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8904549713227140018}
   - component: {fileID: 2283301953750057775}
+  - component: {fileID: 6792286973690078355}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -44,7 +45,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c43a207f5a3f44bea56a6835723332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
-  playerPrefab: {fileID: 1856444695699938564, guid: 0d14b4bb229df4fd7be154a2fa3006bc, type: 3}
+  lifePoints: 2
+  maxPlayerCount: 2
+  playerCountWinCondition: 0
+  playerList: []
   respawnPoint: {fileID: 0}
-  respawnDelay: 1.5
-  player: {fileID: 0}
+  playerDevice:
+  - Empty
+  - Empty
+  - Empty
+  - Empty
+--- !u!114 &6792286973690078355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532628561056841184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInputManager
+  m_NotificationBehavior: 3
+  m_MaxPlayerCount: 1
+  m_AllowJoining: 1
+  m_JoinBehavior: 1
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Join
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 9e326ba4-9bd3-4b46-8883-4ea27abbabc4
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -3200524281712914694, guid: 77be1cddaf226419bb711ce1db5834fd, type: 3}
+  m_PlayerPrefab: {fileID: 1856444695699938564, guid: 0d14b4bb229df4fd7be154a2fa3006bc, type: 3}
+  m_SplitScreen: 0
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1

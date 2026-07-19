@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     private SpriteRenderer sr => GetComponent<SpriteRenderer>();
-    protected Transform player;
+    protected List<Player> playerList;
     protected Animator anim;
     protected Rigidbody2D rb;
     protected Collider2D[] colliders;
@@ -52,12 +53,12 @@ public class Enemy : MonoBehaviour
         }
 
         PlayerManager.OnPlayerRespawn += UpdatePlayersReference;
+        PlayerManager.OnPlayerDeath += UpdatePlayersReference;
     }
 
     private void UpdatePlayersReference()
     {
-        if (player == null)
-            player = PlayerManager.instance.player.transform;
+        playerList = PlayerManager.instance.GetPlayerList();
     }
 
     protected virtual void Update()
@@ -86,6 +87,7 @@ public class Enemy : MonoBehaviour
             deathRotationDirection = deathRotationDirection * -1;
 
         PlayerManager.OnPlayerRespawn -= UpdatePlayersReference;
+        PlayerManager.OnPlayerDeath -= UpdatePlayersReference;
         Destroy(gameObject, 10);
     }
 
