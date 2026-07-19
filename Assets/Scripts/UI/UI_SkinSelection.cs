@@ -89,7 +89,7 @@ public class UI_SkinSelection : MonoBehaviour
             BuySkin(skinIndex);
         else
         {
-            SkinManager.instance.SetSkinId(skinIndex);
+            SkinManager.instance.SetSkinId(skinIndex, 0);
             mainMenuUI.SwitchUI(levelSelectionUI.gameObject);
         }
 

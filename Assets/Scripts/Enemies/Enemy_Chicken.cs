@@ -6,6 +6,7 @@ public class Enemy_Chicken : Enemy
     [SerializeField] private float aggroDuration;
     [SerializeField] private float detectionRange;
 
+    private Transform player;
     private float aggroTimer;
     private bool canFlip = true;
 
@@ -51,7 +52,7 @@ public class Enemy_Chicken : Enemy
         if (canMove == false)
             return;
 
-        HandleFlip(player.position.x);
+        HandleFlip(player.transform.position.x);
 
         rb.linearVelocity = new Vector2(moveSpeed * facingDir, rb.linearVelocityY);
     }
@@ -72,5 +73,22 @@ public class Enemy_Chicken : Enemy
     {
         base.Flip();
         canFlip = true;
+        FindClosestPlayer();
+    }
+
+    private void FindClosestPlayer()
+    {
+        float closestDistance = float.MaxValue;
+
+        foreach (Player p in playerList)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, p.transform.position);
+
+            if (distanceToPlayer < closestDistance)
+            {
+                closestDistance = distanceToPlayer;
+                player = p.transform;
+            }
+        }
     }
 }
