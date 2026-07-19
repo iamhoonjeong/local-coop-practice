@@ -23,11 +23,11 @@ public class UI_SkinSelection : MonoBehaviour
 
     [Header("UI Skin Details")]
     [SerializeField] private Skin[] skinList;
-    [SerializeField] private int currentSkinIndex;
-    [SerializeField] List<int> skinIndex;
+    private int currentSkinIndex;
+    private List<int> skinIndex;
 
-    public int maxPlayerIndex;
-    public int currentPlayerIndex;
+    private int maxPlayerIndex;
+    private int currentPlayerIndex;
 
     [Header("UI deatils")]
     [SerializeField] private Animator skinDisplay;
@@ -168,6 +168,7 @@ public class UI_SkinSelection : MonoBehaviour
     private void UpdateSkinDisplay()
     {
         bankText.text = $"Bank: {FruitsInBank()}";
+        playerNumberText.text = $"{currentPlayerIndex + 1} Player";
 
         for (int i = 0; i < skinDisplay.layerCount; i++)
         {
@@ -189,8 +190,6 @@ public class UI_SkinSelection : MonoBehaviour
             priceText.text = $"Price: {skinList[selectedSkinIndex].skinPrice}";
             buySelectText.text = "Buy";
         }
-
-        playerNumberText.text = $"{currentPlayerIndex + 1} Player";
     }
 
     private void BuySkin(int index)

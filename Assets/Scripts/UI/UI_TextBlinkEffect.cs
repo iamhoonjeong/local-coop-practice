@@ -7,8 +7,7 @@ public class UI_TextBlinkEffect : MonoBehaviour
     [SerializeField] private float cycleDuration;
     [SerializeField] private TextMeshProUGUI text;
 
-    private Color transparentColor = new Color(1, 1, 1, 0.2f);
-
+    private Color transperentColor = new Color(1, 1, 1, .2f);
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();
@@ -25,10 +24,9 @@ public class UI_TextBlinkEffect : MonoBehaviour
             ToggleColor(Color.white);
             yield return new WaitForSeconds(halfCycle);
 
-            ToggleColor(transparentColor);
+            ToggleColor(transperentColor);
             yield return new WaitForSeconds(halfCycle);
         }
-        ;
     }
 
     private void ToggleColor(Color color)

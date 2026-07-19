@@ -77,7 +77,8 @@ public class PlayerManager : MonoBehaviour
 
         foreach (GameObject gameObject in objectsToDisable)
         {
-            gameObject.SetActive(false);
+            if (gameObject != null)
+                gameObject.SetActive(false);
         }
     }
 
