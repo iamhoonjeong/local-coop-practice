@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour
     public static event Action OnPlayerRespawn;
     public static event Action OnPlayerDeath;
 
+    private LevelSplitScreenSetup splitScreenSetup;
+
     public PlayerInputManager playerInputManager { get; private set; }
     public static PlayerManager instance;
 
@@ -55,6 +57,8 @@ public class PlayerManager : MonoBehaviour
 
     public void EnableJoinAndUpdateLifePoints()
     {
+        splitScreenSetup = FindAnyObjectByType<LevelSplitScreenSetup>();
+
         playerInputManager.EnableJoining();
         playerCountWinCondition = maxPlayerCount;
         lifePoints = maxPlayerCount;
@@ -79,6 +83,12 @@ public class PlayerManager : MonoBehaviour
         {
             if (gameObject != null)
                 gameObject.SetActive(false);
+        }
+
+        if (playerInputManager.splitScreen == true)
+        {
+            newPlayer.camera = splitScreenSetup.mainCamera[newPlayerNumber];
+            splitScreenSetup.cinemachineCamera[newPlayerNumber].Follow = newPlayer.transform;
         }
     }
 
